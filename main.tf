@@ -14,11 +14,16 @@ resource "docker_image" "nginx" {
 }
 
 resource "docker_container" "nginx" {
-    image = docker_image.nginx.latest
+    image = docker_image.nginx.image_id
     name  = "nginx"
     ports {
         internal = 80
         external = var.external_port
         protocol = "tcp"
     }
+}
+
+output "url" {
+  description = "value of the url"
+    value       = join(":", ["http://localhost",tostring(var.external_port),])
 }
